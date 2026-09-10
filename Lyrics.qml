@@ -170,6 +170,7 @@ PluginComponent {
 
     property string clockTimezones: pluginData.clockTimezones ?? "中国时间:8,日本时间:9,太平洋时间:auto"
     property bool useAlbumAccent: pluginData.useAlbumAccent ?? true
+    property bool usePillAccent: pluginData.usePillAccent ?? false
     property bool showStatusIndicators: pluginData.showStatusIndicators ?? true
     property bool scrollWheelVolume: pluginData.scrollWheelVolume ?? true
     readonly property color _cardAccent: root.useAlbumAccent ? MediaAccentService.accent : Theme.primary
@@ -1805,7 +1806,7 @@ PluginComponent {
                         }
 font.pixelSize: hPillRoot.fontSize
                     font.family: Theme.fontFamily
-                    color: !root.idleClock && root.useAlbumAccent ? root._cardAccent : Theme.widgetTextColor
+                    color: !root.idleClock && root.usePillAccent ? MediaAccentService.accent : Theme.widgetTextColor
                     font.weight: Font.Bold
                     wrapMode: Text.NoWrap
                     maximumLineCount: 1
@@ -1862,7 +1863,7 @@ font.pixelSize: hPillRoot.fontSize
                     }
                     font.pixelSize: hPillRoot.fontSize
                     font.family: Theme.fontFamily
-                    color: !root.idleClock && root.useAlbumAccent ? root._cardAccent : Theme.widgetTextColor
+                    color: !root.idleClock && root.usePillAccent ? MediaAccentService.accent : Theme.widgetTextColor
                     font.weight: Font.Bold
                     wrapMode: Text.NoWrap
                     maximumLineCount: 1
@@ -1897,7 +1898,7 @@ font.pixelSize: hPillRoot.fontSize
                     }
                     font.pixelSize: hPillRoot.fontSize
                     font.family: Theme.fontFamily
-                    color: !root.idleClock && root.useAlbumAccent ? root._cardAccent : Theme.widgetTextColor
+                    color: !root.idleClock && root.usePillAccent ? MediaAccentService.accent : Theme.widgetTextColor
                     font.weight: Font.Bold
                     wrapMode: Text.NoWrap
                     maximumLineCount: 1
@@ -1926,7 +1927,7 @@ font.pixelSize: hPillRoot.fontSize
             DankIcon {
                 name: "lyrics"
                 size: Theme.iconSize
-                color: root.lyricsLines.length > 0 ? root._cardAccent : Theme.widgetTextColor
+                color: root.lyricsLines.length > 0 && root.usePillAccent ? MediaAccentService.accent : Theme.widgetTextColor
                 anchors.horizontalCenter: parent.horizontalCenter
             }
 

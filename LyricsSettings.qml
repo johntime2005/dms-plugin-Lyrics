@@ -159,9 +159,16 @@ PluginSettings {
 
             ToggleSetting {
                 settingKey: "useAlbumAccent"
-                label: root.isEnglish ? "Colors Follow Album Art" : "胶囊与卡片颜色跟随封面"
-                description: root.isEnglish ? "Use the album art dominant color for the status bar pill lyric text and popup card accents (play buttons, timeline, time). Turn off to follow the theme color. Clocks always use the theme color" : "状态栏胶囊歌词、弹窗卡片重点元素（播放按钮、进度条、时间等）使用当前封面主色；关闭则跟随主题颜色。时钟始终使用主题色"
+                label: root.isEnglish ? "Card Colors Follow Album Art" : "卡片颜色跟随封面"
+                description: root.isEnglish ? "Use the album art dominant color for the popup card accents (play buttons, timeline, time text). Turn off to follow the theme color. Clocks always use the theme color" : "弹窗卡片重点元素（播放按钮、进度条、时间等）使用当前封面主色；关闭则跟随主题颜色。时钟始终使用主题色"
                 defaultValue: true
+            }
+
+            ToggleSetting {
+                settingKey: "usePillAccent"
+                label: root.isEnglish ? "Pill Lyrics Color Follows Album Art" : "胶囊歌词颜色跟随封面"
+                description: root.isEnglish ? "Use the album art dominant color for the status bar pill lyric text (original\/translation and the vertical pill icon). Turn off to use the theme text color" : "状态栏胶囊歌词文字（原文/翻译，及侧边栏歌词图标）使用当前封面主色；关闭则用主题文字颜色"
+                defaultValue: false
             }
 
             ToggleSetting {
