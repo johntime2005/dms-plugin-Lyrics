@@ -1722,10 +1722,36 @@ PluginComponent {
                 color: Theme.surfaceContainerHighest
                 clip: true
 
-                DankAlbumArt {
+                Timer {
+                    id: artBounceTimer
+                    interval: 0
+                    onTriggered: {
+                        var c = artLoader.sourceComponent;
+                        artLoader.sourceComponent = null;
+                        artLoader.sourceComponent = c;
+                    }
+                }
+
+                Connections {
+                    target: root
+                    function onCurrentTitleChanged() {
+                        artBounceTimer.restart();
+                    }
+                }
+
+                Loader {
+                    id: artLoader
                     anchors.fill: parent
-                    activePlayer: root.activePlayer
-                    showAnimation: false
+                    sourceComponent: artSourceComponent
+                }
+
+                Component {
+                    id: artSourceComponent
+                    DankAlbumArt {
+                        anchors.fill: parent
+                        activePlayer: root.activePlayer
+                        showAnimation: false
+                    }
                 }
 
                 RotationAnimation on rotation {
@@ -1777,13 +1803,13 @@ PluginComponent {
                                 return root.currentTitle || "";
                             return root.currentDisplayText();
                         }
-                        font.pixelSize: hPillRoot.fontSize
-                        font.family: Theme.fontFamily
-                        color: root.idleClock ? root._cardAccent : Theme.widgetTextColor
-                        font.weight: Font.Bold
+font.pixelSize: hPillRoot.fontSize
+                    font.family: Theme.fontFamily
+                    color: !root.idleClock && root.useAlbumAccent ? root._cardAccent : Theme.widgetTextColor
+                    font.weight: Font.Bold
                     wrapMode: Text.NoWrap
                     maximumLineCount: 1
-                        elide: root.lyricEllipsis ? Text.ElideRight : Text.ElideNone
+                    elide: root.lyricEllipsis ? Text.ElideRight : Text.ElideNone
                         width: root.lyricEllipsis ? Math.min(implicitWidth, 350 - 48) : implicitWidth
                         visible: text !== ""
                     }
@@ -1836,7 +1862,7 @@ PluginComponent {
                     }
                     font.pixelSize: hPillRoot.fontSize
                     font.family: Theme.fontFamily
-                    color: root.idleClock ? root._cardAccent : Theme.widgetTextColor
+                    color: !root.idleClock && root.useAlbumAccent ? root._cardAccent : Theme.widgetTextColor
                     font.weight: Font.Bold
                     wrapMode: Text.NoWrap
                     maximumLineCount: 1
@@ -1871,7 +1897,7 @@ PluginComponent {
                     }
                     font.pixelSize: hPillRoot.fontSize
                     font.family: Theme.fontFamily
-                    color: Theme.widgetTextColor
+                    color: !root.idleClock && root.useAlbumAccent ? root._cardAccent : Theme.widgetTextColor
                     font.weight: Font.Bold
                     wrapMode: Text.NoWrap
                     maximumLineCount: 1
@@ -2178,11 +2204,37 @@ PluginComponent {
                             color: "#1a1a1a"  // 中心深色背景
                             clip: true
 
+                            Timer {
+                                id: popArtBounceTimer
+                                interval: 0
+                                onTriggered: {
+                                    var c = popArtLoader.sourceComponent;
+                                    popArtLoader.sourceComponent = null;
+                                    popArtLoader.sourceComponent = c;
+                                }
+                            }
+
+                            Connections {
+                                target: root
+                                function onCurrentTitleChanged() {
+                                    popArtBounceTimer.restart();
+                                }
+                            }
+
                             // 专辑封面
-                            DankAlbumArt {
+                            Loader {
+                                id: popArtLoader
                                 anchors.fill: parent
-                                activePlayer: root.activePlayer
-                                showAnimation: true
+                                sourceComponent: popArtSourceComponent
+                            }
+
+                            Component {
+                                id: popArtSourceComponent
+                                DankAlbumArt {
+                                    anchors.fill: parent
+                                    activePlayer: root.activePlayer
+                                    showAnimation: true
+                                }
                             }
                         }
 
