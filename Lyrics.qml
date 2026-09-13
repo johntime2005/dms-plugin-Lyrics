@@ -914,6 +914,13 @@ PluginComponent {
                 return;
             }
 
+            // 合并网易云译文（sub_lyric 与 lyric 时间戳对齐，交由双语配对逻辑分组）
+            var subText = result.sub_lyric || "";
+            if (subText.trim() !== "") {
+                lines = lines.concat(parseLrc(subText));
+                lines.sort(function (a, b) { return a.time - b.time; });
+            }
+
             _applyLyricsLines(lines, lyricSrc.netease, expectedTitle, expectedArtist);
             console.info("[Lyrics] 网易云: 匹配 \"" + matchedName + "\" - " + matchedArtist);
 
@@ -1723,23 +1730,8 @@ PluginComponent {
                 color: Theme.surfaceContainerHighest
                 clip: true
 
-                Timer {
-                    id: artBounceTimer
-                    interval: 0
-                    onTriggered: {
-                        var c = artLoader.sourceComponent;
-                        artLoader.sourceComponent = null;
-                        artLoader.sourceComponent = c;
-                    }
-                }
-
-                Connections {
-                    target: root
-                    function onCurrentTitleChanged() {
-                        artBounceTimer.restart();
-                    }
-                }
-
+                // 封面统一走 DMS 的 TrackArtService：它把网络图落到本地
+                // imagecache，避免 MPRIS 的 https 直链在 activePlayer 重建时丢失状态
                 Loader {
                     id: artLoader
                     anchors.fill: parent
@@ -1751,6 +1743,7 @@ PluginComponent {
                     DankAlbumArt {
                         anchors.fill: parent
                         activePlayer: root.activePlayer
+                        artUrl: TrackArtService.resolvedArtUrl
                         showAnimation: false
                     }
                 }
@@ -2205,23 +2198,6 @@ font.pixelSize: hPillRoot.fontSize
                             color: "#1a1a1a"  // 中心深色背景
                             clip: true
 
-                            Timer {
-                                id: popArtBounceTimer
-                                interval: 0
-                                onTriggered: {
-                                    var c = popArtLoader.sourceComponent;
-                                    popArtLoader.sourceComponent = null;
-                                    popArtLoader.sourceComponent = c;
-                                }
-                            }
-
-                            Connections {
-                                target: root
-                                function onCurrentTitleChanged() {
-                                    popArtBounceTimer.restart();
-                                }
-                            }
-
                             // 专辑封面
                             Loader {
                                 id: popArtLoader
@@ -2234,6 +2210,7 @@ font.pixelSize: hPillRoot.fontSize
                                 DankAlbumArt {
                                     anchors.fill: parent
                                     activePlayer: root.activePlayer
+                                    artUrl: TrackArtService.resolvedArtUrl
                                     showAnimation: true
                                 }
                             }
