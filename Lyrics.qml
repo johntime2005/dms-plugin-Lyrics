@@ -1732,20 +1732,11 @@ PluginComponent {
 
                 // 封面统一走 DMS 的 TrackArtService：它把网络图落到本地
                 // imagecache，避免 MPRIS 的 https 直链在 activePlayer 重建时丢失状态
-                Loader {
-                    id: artLoader
+                DankAlbumArt {
                     anchors.fill: parent
-                    sourceComponent: artSourceComponent
-                }
-
-                Component {
-                    id: artSourceComponent
-                    DankAlbumArt {
-                        anchors.fill: parent
-                        activePlayer: root.activePlayer
-                        artUrl: TrackArtService.resolvedArtUrl
-                        showAnimation: false
-                    }
+                    activePlayer: root.activePlayer
+                    artUrl: TrackArtService.resolvedArtUrl
+                    showAnimation: false
                 }
 
                 RotationAnimation on rotation {
@@ -2199,20 +2190,11 @@ font.pixelSize: hPillRoot.fontSize
                             clip: true
 
                             // 专辑封面
-                            Loader {
-                                id: popArtLoader
+                            DankAlbumArt {
                                 anchors.fill: parent
-                                sourceComponent: popArtSourceComponent
-                            }
-
-                            Component {
-                                id: popArtSourceComponent
-                                DankAlbumArt {
-                                    anchors.fill: parent
-                                    activePlayer: root.activePlayer
-                                    artUrl: TrackArtService.resolvedArtUrl
-                                    showAnimation: true
-                                }
+                                activePlayer: root.activePlayer
+                                artUrl: TrackArtService.resolvedArtUrl
+                                showAnimation: true
                             }
                         }
 
