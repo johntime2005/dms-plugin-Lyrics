@@ -1841,8 +1841,12 @@ font.pixelSize: hPillRoot.fontSize
                             return root.clockText();
                         if (hPillRoot.infoPaused || hPillRoot.introPhase || hPillRoot.instrumentalPhase || hPillRoot.blockedPhase)
                             return root.currentTitle || "";
-                        if (hPillRoot.dualMode)
+                        if (hPillRoot.dualMode) {
+                            // 居中分栏按显示模式取行：仅翻译时左栏让位给译文
+                            if (root.lyricLanguage === "translation")
+                                return root.currentPair?.trans || (root.currentPair?.orig ?? "");
                             return root.currentPair?.orig ?? "";
+                        }
                         return root.pillSingleText();
                     }
                     font.pixelSize: hPillRoot.fontSize
@@ -1875,6 +1879,9 @@ font.pixelSize: hPillRoot.fontSize
                         if (hPillRoot.infoPaused || hPillRoot.introPhase || hPillRoot.instrumentalPhase || hPillRoot.blockedPhase)
                             return root.currentArtist || "";
                         if (hPillRoot.dualMode) {
+                            // 仅原文 / 仅翻译为单行模式，右栏留空，避免同一行重复渲染
+                            if (root.lyricLanguage !== "both")
+                                return "";
                             var t = root.currentPair?.trans ?? "";
                             return t || (root.currentPair?.orig ?? "");
                         }
